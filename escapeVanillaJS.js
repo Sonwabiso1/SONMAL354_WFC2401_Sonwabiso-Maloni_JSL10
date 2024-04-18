@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 🪲 Bug: Incorrect ID used for attaching the event listener
-    document.getElementById("solveRoom").addEventListener("click", () => {
+    document.getElementById("solveRoom1").addEventListener("click", () => {
         fetch('books.json') 
             .then(response => response.json())
             .then(books => {
                 const mostRecentBook = findMostRecentBook(books);
                 // 🪲 Bug: Incorrect element ID
-                document.getElementById("resultRoom1").textContent = `The key to the next room is: ${mostRecentBook.title}`;
+                document.getElementById("room1Result").textContent = `The key to the next room is: ${mostRecentBook.title}`;
             });
     });
 
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 🪲 Bug: What's mssing from JS concepts?
         const reactConcepts = new Set(['components', 'jsx', 'hooks', 'async']);
         // 🪲 Bug: Incorrect function call
-        const commonConcepts = findIntersection(jsConcepts, jsConcepts);
+        const commonConcepts = findIntersection(jsConcepts, reactConcepts);
         document.getElementById("room2Result").textContent = `The code to unlock the door is: ${Array.from(commonConcepts).join(', ')}`;
     });
 
@@ -39,10 +39,24 @@ function findMostRecentBook(books) {
 }
 
 function findIntersection(setA, setB) {
-    // 🪲 Bug: Incorrect logic
-    const intersection = new Set([...setA]);
+    let intersection = new Set();
+    // Iterate over the smaller set for efficiency
+    if (setA.size < setB.size) {
+      for (let elem of setA) {
+        if (setB.has(elem)) {
+          intersection.add(elem);
+        }
+      }
+    } else {
+      for (let elem of setB) {
+        if (setA.has(elem)) {
+          intersection.add(elem);
+        }
+      }
+    }
     return intersection;
-}
+  }
+  
 
 async function navigateLabyrinth(directions) {
     for (let direction of directions) {
